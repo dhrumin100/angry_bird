@@ -354,4 +354,3 @@ A smart, data-driven solution that:
 
 ---
 
-**Team KAVAACH** | Angry Bird Hackathon - Aarohan
