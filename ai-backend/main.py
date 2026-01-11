@@ -204,8 +204,12 @@ async def analyze_image(
                 }
             }
             
-            else:
-                return JSONResponse(status_code=503, content={"success": False, "error": "Model not loaded"})
+        finally:
+            if temp_filename and os.path.exists(temp_filename):
+                try:
+                    os.remove(temp_filename)
+                except Exception:
+                    pass
 
     except Exception as e:
         return JSONResponse(status_code=500, content={"success": False, "error": str(e)})
