@@ -8,6 +8,11 @@
 
 ---
 
+
+> 📚 **[View Detailed System Documentation](./docs/SYSTEM_DESIGN.md)** | **[Research Notes](./docs/RESEARCH.md)**
+
+---
+
 ## 📋 Table of Contents
 - [Idea Summary](#-idea-summary)
 - [Problem Statement](#-problem-statement)
@@ -88,6 +93,16 @@ A smart, data-driven solution that:
 - 📊 **Governance Dashboard** - Visual overview for authorities
 - ⚡ **Real-Time Alerts** - Priority-based notifications
 - 📱 **Multi-Source Input** - Bus cameras, citizen uploads
+
+## 📂 Repository Structure
+
+-   [**angry-bird/**](./angry-bird/): **Frontend (React)** (Vite PWA)
+-   [**backend/**](./backend/): **Backend API (Node.js/Express)**
+    -   `server.js`: Entry point
+    -   `routes/`: API Endpoints
+-   [**ai-backend/**](./ai-backend/): **AI Service (Python/FastAPI)**
+    -   `main.py`: YOLOv8 Inference Engine
+    -   `models/`: Checkpoints
 
 ---
 
@@ -229,9 +244,9 @@ A smart, data-driven solution that:
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
 │                    POTHOLE DETECTION MODEL                       │
-│  Architecture: CNN (MobileNetV2 / ResNet)                       │
-│  Input: (224, 224, 3) → Conv → BatchNorm → FC → Softmax         │
-│  Output: Binary Classification [Pothole, Normal]                │
+│  Architecture: YOLOv8 (Ultralytics)                             │
+│  Input: (640, 640, 3) → Backbone → Neck → Head                  │
+│  Output: Object Detection [BBox, Class, Confidence]             │
 └─────────────────────────────────────────────────────────────────┘
                               │
                               ▼
@@ -276,10 +291,11 @@ A smart, data-driven solution that:
 |---------|-------------|
 | Image Upload | Upload road images for analysis |
 | Preprocessing | Resize, normalize, enhance images |
-| Pothole Detection | CNN-based binary classification |
+| **Object Detection** | **YOLOv8** bounding box detection |
+| **Severity Analysis** | Low/Med/High based on defect area |
 | Confidence Score | Output detection probability |
 | Basic UI | Simple interface for demo |
-| Sample Geo-Tagging | Manual/mock GPS data |
+| **AI Explanation** | **Groq/LLM** generated insights |
 
 ### ❌ Out of Scope (For Now)
 | Feature | Reason |

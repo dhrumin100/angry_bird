@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+env/
+
+# Environment Variables
+.env
+.env.local
+.DS_Store
+
+# IDEs
+.vscode/
+.idea/
+
+# Build Outputs
+dist/
+build/
+coverage/
+*.log
+
+# Project Specific
+angry-bird/server/uploads/
+uploads/
