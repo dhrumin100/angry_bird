@@ -6,23 +6,24 @@ The system follows a modern **Microservices-based Architecture**, separating the
 
 ```mermaid
 graph TD
-    User[Citizen / User] -->|HTTPS| CDN[CDN / Load Balancer]
-    CDN -->|Static Assets| S3[Storage (S3)]
-    CDN -->|API Request| FE[Frontend (React/Vite)]
-    
+    User["Citizen / User"] -->|HTTPS| CDN["CDN / Load Balancer"]
+    CDN -->|Static Assets| S3["Storage - S3"]
+    CDN -->|API Request| FE["Frontend - React Vite"]
+
     subgraph "Backend Services"
-        FE -->|REST API| NodeBE[Node.js Backend]
-        FE -->|Image Analysis| AI[AI Service (FastAPI)]
+        FE -->|REST API| NodeBE["Node.js Backend"]
+        FE -->|Image Analysis| AI["AI Service - FastAPI"]
     end
-    
+
     subgraph "Data Persistence"
-        NodeBE -->|Store Report| DB[(MongoDB Atlas)]
-        AI -->|Load Model| Model[YOLOv8 Weights]
+        NodeBE -->|Store Report| DB["MongoDB Atlas"]
+        AI -->|Load Model| Model["YOLOv8 Weights"]
     end
 
     subgraph "Admin & Ops"
-        Admin[Municipal Admin] -->|Review| NodeBE
+        Admin["Municipal Admin"] -->|Review| NodeBE
     end
+
 ```
 
 ## 2. Data Flow Diagrams (DFD)
