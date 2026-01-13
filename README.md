@@ -12,10 +12,10 @@
 
 | Member | Role | GitHub |
 |--------|------|--------|
-| **Dhrumin** (dhrumin100) | **Team Lead** & Full Stack | [@dhrumin100](https://github.com/dhrumin100) |
-| **Bhavya** (bhavyakela07) | AI & Mobile Lead | [@bhavyakela07](https://github.com/bhavyakela07) |
+| **Dhrumin** (dhrumin100) | **Team Lead** AI & Mobile Lead | [@dhrumin100](https://github.com/dhrumin100) |
+| **Bhavya** (bhavyakela07) | AI & Database | [@bhavyakela07](https://github.com/bhavyakela07) |
 | **Meet** (meetvasini2810) | Frontend & Design | [@meetvasini2810](https://github.com/meetvasini2810) |
-| **Krishna** (krishna-9016) | Backend & Database | [@krishna-9016](https://github.com/krishna-9016) |
+| **Krishna** (krishna-9016) | Backend  | [@krishna-9016](https://github.com/krishna-9016) |
 
 ---
 *Submitted for The Slingshot Hackathon*
