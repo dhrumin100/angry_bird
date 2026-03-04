@@ -6,15 +6,20 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libglib2.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
+# Hugging Face Spaces require running as a non-root user (UID 1000)
+RUN useradd -m -u 1000 user
+USER user
+ENV PATH="/home/user/.local/bin:$PATH"
+
 WORKDIR /app
 
 # Install Python dependencies first (cached layer)
-COPY requirements.txt .
+COPY --chown=user requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application code and model
-COPY main.py .
-COPY best.pt .
+COPY --chown=user main.py .
+COPY --chown=user best.pt .
 
 EXPOSE 7860
 
