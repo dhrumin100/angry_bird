@@ -44,7 +44,7 @@ app.add_middleware(
 
 # Global model variable
 model = None
-MODEL_PATH = r"d:\angry\ai-backend\runs\detect\pothole_v13\weights\best.pt"  # Trained model weights
+MODEL_PATH = "best.pt"  # Fine-tuned pothole detector
 
 def load_model():
     global model
@@ -215,4 +215,4 @@ async def analyze_image(
         return JSONResponse(status_code=500, content={"success": False, "error": str(e)})
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=7860)
