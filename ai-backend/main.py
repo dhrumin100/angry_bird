@@ -194,9 +194,9 @@ async def analyze_image(
                     "detected_at": datetime.now().isoformat()
                 },
                 "debug_metrics": {
-                    "image_dim": [img_width, img_height],
+                    "image_dim": [width, height],
                     "total_box_area_px": total_box_area,
-                    "severity_ratio": severity_ratio,
+                    "severity_ratio": area_ratio,
                     "inference_params": {
                         "conf": conf_threshold,
                         "iou": iou_threshold
