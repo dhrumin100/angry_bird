@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import api from '../services/api'
 import { useAuth } from '../context/AuthContext'
 import {
     Trophy,
@@ -62,14 +63,6 @@ function Leaderboard() {
     useEffect(() => {
         const fetchLeaderboard = async () => {
             try {
-                // Dynamically import api if we want to keep it local or just use the top-level import if added.
-                // Better: rely on top-level import if I can add it, but replace_file_content chunking makes adding to line 1 hard without contexts.
-                // However, I can use a dynamic import properly or just assume 'api' was imported if I added it to top.
-                // Wait, I didn't add it to top. 
-                // Let's use dynamic import for 'api' to be safe without editing top of file which might fail match.
-                // actually, standard dynamic import: const api = (await import('../services/api')).default;
-                
-                const api = (await import('../services/api')).default;
                 const { data } = await api.get('/auth/leaderboard');
                 setLeaderboardData(data);
                 setLoading(false);
@@ -112,7 +105,9 @@ function Leaderboard() {
     }
 
     // Use real data or fallback to mock if empty/loading (optional strategy, here we use real)
-    const currentLeaderboard = leaderboardData.length > 0 ? leaderboardData : (activeTab === 'city' ? MOCK_LEADERBOARD.mumbai : MOCK_LEADERBOARD.nationwide);
+    const currentLeaderboard = (Array.isArray(leaderboardData) && leaderboardData.length > 0) 
+        ? leaderboardData 
+        : (activeTab === 'city' ? MOCK_LEADERBOARD.mumbai : MOCK_LEADERBOARD.nationwide);
 
     return (
         <main style={{ minHeight: '100vh', background: 'var(--color-bg-gradient)', paddingTop: '5rem', paddingBottom: '2rem' }}>
@@ -363,7 +358,7 @@ function Leaderboard() {
                                         </td>
                                         <td style={{ padding: 'var(--space-md) var(--space-lg)', textAlign: 'right' }}>
                                             <span style={{ fontWeight: '700', color: 'var(--color-primary)', fontSize: '1.1rem' }}>
-                                                {user.score.toLocaleString()}
+                                                {(user.score || 0).toLocaleString()}
                                             </span>
                                         </td>
                                     </tr>

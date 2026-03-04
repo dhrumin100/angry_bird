@@ -63,14 +63,15 @@ const ReportDetailModal = ({ report, onClose, onUpdateStatus }) => {
     return (
         <div style={{
             position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-            background: 'rgba(0,0,0,0.5)', zIndex: 100,
+            background: 'rgba(0,0,0,0.5)', zIndex: 9999,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             backdropFilter: 'blur(4px)'
         }}>
             <div style={{
                 background: 'white', width: '950px', maxHeight: '90vh',
-                borderRadius: '16px', overflow: 'hidden', display: 'flex', flexDirection: 'column',
-                boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)'
+                borderRadius: '16px', display: 'flex', flexDirection: 'column',
+                boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)', zIndex: 10000,
+                position: 'relative', overflow: 'hidden'
             }}>
                 {/* Header */}
                 <div style={{ padding: '1.25rem 1.5rem', borderBottom: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#f8fafc' }}>

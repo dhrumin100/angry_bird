@@ -35,10 +35,10 @@ const FleetManagement = () => {
             {/* Overview Stats */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.5rem', marginBottom: '2rem' }}>
                 {[
-                    { label: 'Total Fleet', value: '15 Trucks' },
-                    { label: 'Active Now', value: fleet.filter(t => t.status !== 'Offline/Maintenance').length || 12, color: '#22c55e' },
-                    { label: 'En Route', value: fleet.filter(t => t.status === 'En Route').length || 4, color: '#3b82f6' },
-                    { label: 'In Maintenance', value: fleet.filter(t => t.status === 'Offline/Maintenance').length || 2, color: '#ef4444' }
+                    { label: 'Total Fleet', value: `${fleet.length} Trucks` },
+                    { label: 'Active Now', value: fleet.filter(t => t.status !== 'Offline/Maintenance').length || 0, color: '#22c55e' },
+                    { label: 'En Route', value: fleet.filter(t => t.status === 'En Route').length || 0, color: '#3b82f6' },
+                    { label: 'In Maintenance', value: fleet.filter(t => t.status === 'Offline/Maintenance').length || 0, color: '#ef4444' }
                 ].map((stat, idx) => (
                     <div key={idx} style={{ background: 'white', padding: '1.5rem', borderRadius: '12px', boxShadow: '0 1px 2px rgba(0,0,0,0.05)' }}>
                         <div style={{ color: '#64748b', fontSize: '0.85rem', marginBottom: '0.5rem' }}>{stat.label}</div>
@@ -97,36 +97,11 @@ const FleetManagement = () => {
                                 </tr>
                             )
                         }) : (
-                            // Mock Data fallback if fleet is empty
-                             Array.from({ length: 5 }).map((_, i) => (
-                                <tr key={i} style={{ borderBottom: '1px solid #f1f5f9' }}>
-                                    <td style={{ padding: '1rem 1.5rem', fontWeight: '600', color: '#334155' }}>Truck-0{i+1}</td>
-                                    <td style={{ padding: '1rem' }}>
-                                        <span style={{ 
-                                            padding: '0.25rem 0.75rem', 
-                                            background: i%2===0 ? '#dcfce7' : '#dbeafe', 
-                                            color: i%2===0 ? '#16a34a' : '#2563eb', 
-                                            borderRadius: '20px', 
-                                            fontSize: '0.75rem', 
-                                            fontWeight: '600' 
-                                        }}>
-                                            {i%2===0 ? 'Available' : 'En Route'}
-                                        </span>
-                                    </td>
-                                    <td style={{ padding: '1rem', color: '#64748b' }}>Ravi Kumar</td>
-                                    <td style={{ padding: '1rem', color: '#64748b' }}>Andheri East, Mumbai</td>
-                                    <td style={{ padding: '1rem' }}>
-                                        <div style={{ width: '60px', height: '6px', background: '#e2e8f0', borderRadius: '4px', overflow: 'hidden' }}>
-                                            <div style={{ width: '75%', height: '100%', background: '#22c55e' }}></div>
-                                        </div>
-                                    </td>
-                                    <td style={{ padding: '1rem' }}>
-                                        <button style={{ color: '#3b82f6', background: 'none', border: 'none', cursor: 'pointer', fontWeight: '500' }}>
-                                            Manage
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))
+                             <tr>
+                                <td colSpan="6" style={{ padding: '3rem', textAlign: 'center', color: '#94a3b8' }}>
+                                    No vehicles actively registered in the fleet.
+                                </td>
+                             </tr>
                         )}
                     </tbody>
                 </table>

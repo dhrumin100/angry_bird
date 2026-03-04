@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import { useEffect, useRef } from 'react'
+import confetti from 'canvas-confetti'
 import {
     Clock,
     CheckCircle,
@@ -14,10 +16,28 @@ import {
 
 function MyReports() {
     const { submissions, user } = useAuth()
+    const previousResolvedCount = useRef(0)
     
     // Filter reports for the current user
-    const userReports = submissions?.filter(s => s.userId === user?.id) || []
+    const userReports = submissions?.filter(s => {
+        const subUserId = typeof s.userId === 'object' ? s.userId?._id || s.userId?.id : s.userId;
+        return subUserId === user?._id || subUserId === user?.id;
+    }) || []
 
+    const currentResolvedCount = userReports.filter(s => s.status === 'Resolved').length;
+
+    useEffect(() => {
+        // Fire confetti if the number of resolved reports increased since last render
+        if (currentResolvedCount > previousResolvedCount.current && previousResolvedCount.current !== 0) {
+            confetti({
+                particleCount: 150,
+                spread: 100,
+                origin: { y: 0.6 },
+                colors: ['#10b981', '#3b82f6', '#f59e0b', '#ef4444']
+            });
+        }
+        previousResolvedCount.current = currentResolvedCount;
+    }, [currentResolvedCount]);
 
     const getStatusIcon = (status) => {
         switch (status) {
@@ -155,6 +175,22 @@ function MyReports() {
                                                 {getStatusIcon(report.status)}
                                                 {report.status || 'Pending'}
                                             </span>
+                                            {report.status === 'Resolved' && (
+                                                <span style={{ 
+                                                    fontSize: '0.75rem', 
+                                                    fontWeight: '600', 
+                                                    padding: '0.25rem 0.75rem', 
+                                                    borderRadius: 'var(--radius-full)',
+                                                    background: 'linear-gradient(90deg, #10b981 0%, #059669 100%)',
+                                                    color: 'white',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    gap: '0.25rem',
+                                                    marginLeft: 'var(--space-sm)'
+                                                }}>
+                                                    ✨ Fixed by KAVAACH Fleet!
+                                                </span>
+                                            )}
                                         </div>
 
                                         {/* Report Details */}

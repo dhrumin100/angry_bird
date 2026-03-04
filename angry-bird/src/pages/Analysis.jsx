@@ -14,6 +14,21 @@ import {
     Target,
     Edit3
 } from 'lucide-react'
+import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet'
+import 'leaflet/dist/leaflet.css'
+
+// Fix for Leaflet icons
+import L from 'leaflet';
+import icon from 'leaflet/dist/images/marker-icon.png';
+import iconShadow from 'leaflet/dist/images/marker-shadow.png';
+
+let DefaultIcon = L.icon({
+    iconUrl: icon,
+    shadowUrl: iconShadow,
+    iconSize: [25, 41],
+    iconAnchor: [12, 41]
+});
+L.Marker.prototype.options.icon = DefaultIcon;
 
 function Analysis({ uploadedImage, analysisResults, location, setLocation }) {
     const navigate = useNavigate()
@@ -122,6 +137,33 @@ function Analysis({ uploadedImage, analysisResults, location, setLocation }) {
         }
     }
 
+    const LocationMarker = () => {
+        useMapEvents({
+            click(e) {
+                const { lat, lng } = e.latlng;
+                setLocation(prev => ({
+                    ...prev,
+                    latitude: lat.toFixed(6),
+                    longitude: lng.toFixed(6),
+                    isManuallyEdited: true
+                }));
+                // Try reverse geocoding the new dragged location
+                fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.display_name) {
+                            setManualAddress(data.display_name);
+                            setLocation(prev => ({ ...prev, address: data.display_name }));
+                        }
+                    }).catch(err => console.error("Geocoding fetch error:", err));
+            },
+        });
+
+        return location?.latitude && location?.longitude ? (
+            <Marker position={[location.latitude, location.longitude]} />
+        ) : null;
+    }
+
     if (!analysisResults) return null
 
     const severityConfig = getSeverityConfig(analysisResults.severity)
@@ -177,18 +219,11 @@ function Analysis({ uploadedImage, analysisResults, location, setLocation }) {
                             />
                             {/* Real Bounding Boxes from YOLO Detections */}
                             {analysisResults.detections && analysisResults.detections.map((det, index) => {
-                                // YOLO returns xywh (center_x, center_y, width, height) in pixels
-                                // We need to convert to percentage for responsive display
-                                const [cx, cy, w, h] = det.bbox
+                                // The backend returns [top_left_x, top_left_y, width, height] in pixels
+                                const [x, y, w, h] = det.bbox
                                 
-                                // Get image natural dimensions from analysisResults or use reasonable defaults
-                                // The API returns image_dim in debug_metrics, but we may not have it here
-                                // So we calculate percentage based on the detection's area_ratio
-                                // Better approach: use the actual image dimensions
-                                
-                                // Convert center-based to corner-based (top-left)
-                                const leftPx = cx - (w / 2)
-                                const topPx = cy - (h / 2)
+                                const leftPx = x
+                                const topPx = y
                                 
                                 // We need image dimensions - use area_ratio to estimate if needed
                                 // For now, use percentage of a typical image size or pass through
@@ -421,8 +456,24 @@ function Analysis({ uploadedImage, analysisResults, location, setLocation }) {
                                                     </span>
                                                 )}
                                             </p>
-                                            <p style={{ fontSize: '0.85rem', color: 'var(--color-text-light)' }}>
+                                            <p style={{ fontSize: '0.85rem', color: 'var(--color-text-light)', marginBottom: 'var(--space-md)' }}>
                                                 {location.latitude}, {location.longitude}
+                                            </p>
+                                            <div style={{ height: '200px', borderRadius: '8px', overflow: 'hidden', border: '1px solid var(--color-border)' }}>
+                                                <MapContainer 
+                                                    center={[location.latitude, location.longitude]} 
+                                                    zoom={15} 
+                                                    style={{ height: '100%', width: '100%' }}
+                                                >
+                                                    <TileLayer
+                                                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                                        attribution='&copy; OpenStreetMap contributors'
+                                                    />
+                                                    <LocationMarker />
+                                                </MapContainer>
+                                            </div>
+                                            <p style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.5rem', textAlign: 'center' }}>
+                                                Click anywhere on the map to perfectly pinpoint the issue.
                                             </p>
                                         </>
                                     )}

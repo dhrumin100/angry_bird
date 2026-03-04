@@ -174,7 +174,7 @@ router.get('/leaderboard', async (req, res) => {
             city: user.city,
             score: user.civic_score,
             level: user.level || 'Bronze',
-            avatar: user.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase(),
+            avatar: user.name ? user.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : 'U',
             reports: 0, // Placeholder as we don't aggregate reports count yet efficiently
             resolved: 0, 
             streak: 0 

@@ -32,11 +32,11 @@ const OpsDashboard = () => {
     }
 
     useEffect(() => {
-        fetchQueue()
+        refreshData()
         
         // Auto-refresh every 10 seconds to keep admin view live
         const intervalId = setInterval(() => {
-            fetchQueue()
+            refreshData()
         }, 10000)
 
         return () => clearInterval(intervalId)
@@ -155,8 +155,8 @@ const OpsDashboard = () => {
                          <h3 style={{ fontWeight: '600', color: '#1e293b' }}>Live Dispatch Map</h3>
                          <div style={{ fontSize: '0.85rem', color: '#64748b' }}>Mumbai Central</div>
                     </div>
-                    <div style={{ flex: 1 }}>
-                        <MapContainer center={[19.0760, 72.8777]} zoom={11} style={{ height: '100%', width: '100%' }}>
+                    <div style={{ flex: 1, position: 'relative', zIndex: 1 }}>
+                        <MapContainer center={[19.0760, 72.8777]} zoom={11} style={{ height: '100%', width: '100%', zIndex: 1 }}>
                             <TileLayer
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

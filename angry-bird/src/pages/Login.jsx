@@ -255,48 +255,7 @@ const Login = () => {
                         </button>
                     </form>
 
-                    {/* Divider */}
-                    <div style={{ display: 'flex', alignItems: 'center', margin: '1.25rem 0' }}>
-                        <div style={{ flex: 1, height: '1px', background: 'rgba(0,0,0,0.1)' }}></div>
-                        <span style={{ padding: '0 1rem', fontSize: '0.8rem', color: 'var(--color-text-light)' }}>OR</span>
-                        <div style={{ flex: 1, height: '1px', background: 'rgba(0,0,0,0.1)' }}></div>
-                    </div>
 
-                    {/* Google Button */}
-                    <button
-                        type="button"
-                        onClick={async () => {
-                            const success = await login('GOOGLE_USER', 'password');
-                            if (success) navigate('/dashboard');
-                        }}
-                        style={{
-                            width: '100%',
-                            padding: '0.75rem 1.25rem',
-                            fontSize: '0.9rem',
-                            fontWeight: '500',
-                            color: 'var(--color-text-dark)',
-                            background: 'white',
-                            border: '1.5px solid rgba(0,0,0,0.1)',
-                            borderRadius: '10px',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            gap: '0.5rem',
-                            transition: 'background 0.2s, border-color 0.2s'
-                        }}
-                        onMouseEnter={(e) => {
-                            e.currentTarget.style.background = '#f8f8f8'
-                            e.currentTarget.style.borderColor = 'rgba(0,0,0,0.15)'
-                        }}
-                        onMouseLeave={(e) => {
-                            e.currentTarget.style.background = 'white'
-                            e.currentTarget.style.borderColor = 'rgba(0,0,0,0.1)'
-                        }}
-                    >
-                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" style={{ width: '18px', height: '18px' }} />
-                        Continue with Google
-                    </button>
 
                     {/* Footer */}
                     <p style={{ textAlign: 'center', marginTop: '1.25rem', fontSize: '0.875rem', color: 'var(--color-text-medium)' }}>

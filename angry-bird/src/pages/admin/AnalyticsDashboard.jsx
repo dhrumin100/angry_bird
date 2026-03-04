@@ -1,7 +1,38 @@
-
+import { useEffect } from 'react'
+import { useAdmin } from '../../context/AdminContext'
 import { BarChart3, PieChart, Activity, Map, ArrowUp } from 'lucide-react'
 
 const AnalyticsDashboard = () => {
+    const { analytics, fetchAnalytics } = useAdmin()
+
+    useEffect(() => {
+        fetchAnalytics()
+        
+        const intervalId = setInterval(() => {
+            fetchAnalytics()
+        }, 15000)
+
+        return () => clearInterval(intervalId)
+    }, [])
+
+    // Calculate real percentages from analytics.severityBreakdown
+    // Assuming backend returns: [{ _id: 'High', count: 10 }, { _id: 'Medium', count: 5 }]
+    const rawBreakdown = analytics?.severityBreakdown || [];
+    
+    // Map severities to our specific display categories (or keep them generic)
+    // The mock showed Pothole/Drainage/Garbage, but the backend is giving us High/Medium/Low by default in auth.js.
+    // Let's adapt it to use exact backend data if present, falling back to 0.
+    const totalReports = rawBreakdown.reduce((sum, item) => sum + item.count, 0) || 0;
+    
+    const getPercentage = (label) => {
+        if (totalReports === 0) return 0;
+        const item = rawBreakdown.find(i => i._id === label);
+        return item ? Math.round((item.count / totalReports) * 100) : 0;
+    };
+
+    const highPct = getPercentage('High');
+    const medPct = getPercentage('Medium');
+    const lowPct = getPercentage('Low');
     return (
         <div>
             <div style={{ marginBottom: '2rem' }}>
@@ -46,30 +77,39 @@ const AnalyticsDashboard = () => {
                         <PieChart size={20} color="#64748b" />
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '250px', position: 'relative' }}>
-                        {/* CSS Donut Chart */}
-                        <div style={{ 
-                            width: '180px', height: '180px', borderRadius: '50%', 
-                            background: 'conic-gradient(#ef4444 0% 45%, #f59e0b 45% 70%, #3b82f6 70% 100%)',
-                            position: 'relative',
-                            display: 'flex', alignItems: 'center', justifyContent: 'center'
-                        }}>
-                             <div style={{ width: '120px', height: '120px', borderRadius: '50%', background: 'white', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                                 <span style={{ fontSize: '1.5rem', fontWeight: '700', color: '#1e293b' }}>Total</span>
-                                 <span style={{ fontSize: '0.9rem', color: '#64748b' }}>482 Reports</span>
-                             </div>
-                        </div>
+                        {/* Dynamic CSS Donut Chart */}
+                        {totalReports > 0 ? (
+                            <div style={{ 
+                                width: '180px', height: '180px', borderRadius: '50%', 
+                                background: `conic-gradient(#ef4444 0% ${highPct}%, #f59e0b ${highPct}% ${highPct + medPct}%, #3b82f6 ${highPct + medPct}% 100%)`,
+                                position: 'relative',
+                                display: 'flex', alignItems: 'center', justifyContent: 'center'
+                            }}>
+                                <div style={{ width: '120px', height: '120px', borderRadius: '50%', background: 'white', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                                    <span style={{ fontSize: '1.5rem', fontWeight: '700', color: '#1e293b' }}>Total</span>
+                                    <span style={{ fontSize: '0.9rem', color: '#64748b' }}>{totalReports} Reports</span>
+                                </div>
+                            </div>
+                        ) : (
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', color: '#94a3b8' }}>
+                                <PieChart size={48} opacity={0.2} style={{ marginBottom: '1rem' }} />
+                                <span>No reports yet</span>
+                            </div>
+                        )}
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'center', gap: '1.5rem', marginTop: '1rem' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem' }}>
-                            <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#ef4444' }}></div> Potholes (45%)
+                    {totalReports > 0 && (
+                        <div style={{ display: 'flex', justifyContent: 'center', gap: '1.5rem', marginTop: '1rem' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem' }}>
+                                <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#ef4444' }}></div> High ({highPct}%)
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem' }}>
+                                <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#f59e0b' }}></div> Medium ({medPct}%)
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem' }}>
+                                <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#3b82f6' }}></div> Low ({lowPct}%)
+                            </div>
                         </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem' }}>
-                            <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#f59e0b' }}></div> Drainage (25%)
-                        </div>
-                         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem' }}>
-                            <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#3b82f6' }}></div> Garbage (30%)
-                        </div>
-                    </div>
+                    )}
                 </div>
 
                 {/* 3. Ward Heatmap (Placeholder) */}

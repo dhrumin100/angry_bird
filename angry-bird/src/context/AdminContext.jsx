@@ -10,6 +10,7 @@ export const AdminProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const [stats, setStats] = useState(null);
     const [fleet, setFleet] = useState([]);
+    const [analytics, setAnalytics] = useState(null);
 
     useEffect(() => {
         const storedAdmin = localStorage.getItem('adminUser');
@@ -73,6 +74,15 @@ export const AdminProvider = ({ children }) => {
         }
     };
 
+    const fetchAnalytics = async () => {
+        try {
+            const { data } = await api.get('/admin/analytics');
+            setAnalytics(data);
+        } catch (error) {
+            console.error('Failed to fetch analytics', error);
+        }
+    };
+
     const assignTruck = async ({ truckId, reportId, teamLead, priority }) => {
         try {
              await api.post('/fleet/assign', { truckId, reportId, teamLead, priority });
@@ -91,9 +101,11 @@ export const AdminProvider = ({ children }) => {
         logoutAdmin,
         stats,
         fleet,
+        analytics,
         fetchDashboardStats,
         fetchFleet,
         fetchQueue,
+        fetchAnalytics,
         assignTruck
     };
 
