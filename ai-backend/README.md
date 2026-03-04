@@ -1,7 +1,7 @@
 ---
 title: Kavach AI
 emoji: 🛣️
-colorFrom: orange
+colorFrom: yellow
 colorTo: red
 sdk: docker
 app_file: main.py
