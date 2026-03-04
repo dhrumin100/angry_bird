@@ -152,7 +152,7 @@ async def analyze_image(
                             "issue": detected_issue,
                             "count": len(detections),
                             "severity": severity,
-                            "severity_ratio": round(severity_ratio, 4),
+                            "severity_ratio": round(area_ratio, 4),
                             "max_confidence": round(max_conf, 2)
                         }
                         
@@ -173,7 +173,7 @@ async def analyze_image(
                 if groq_explanation:
                     explanation = groq_explanation
                 else:
-                    explanation = f"Detected {len(detections)} defect(s) covering {severity_ratio:.1%} of road surface."
+                    explanation = f"Detected {len(detections)} defect(s) covering {area_ratio:.1%} of road surface."
             else:
                 detected_issue = "normal_road"
                 severity = "low"
@@ -215,4 +215,4 @@ async def analyze_image(
         return JSONResponse(status_code=500, content={"success": False, "error": str(e)})
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=7860)
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
