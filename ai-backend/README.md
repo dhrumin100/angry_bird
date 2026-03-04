@@ -1,5 +1,5 @@
 ---
-title: Nagar Seva AI
+title: Kavach AI
 emoji: 🛣️
 colorFrom: orange
 colorTo: red
@@ -8,7 +8,7 @@ app_file: main.py
 pinned: false
 ---
 
-# Nagar Seva AI — Pothole Detection API
+# Kavach AI — Pothole Detection API
 
 Real-time pothole detection using YOLOv8n fine-tuned on road defect images, with natural language explanations powered by Groq (Llama 3.3 70B).
 

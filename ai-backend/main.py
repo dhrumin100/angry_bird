@@ -31,7 +31,7 @@ Input: Detection count, severity area ratio, and confidence.
 Output: A JSON object with a single key "explanation".
 """
 
-app = FastAPI(title="Nagar Seva AI Service", description="AI Backend for Road Condition Analysis")
+app = FastAPI(title="Kavach AI Service", description="AI Backend for Road Condition Analysis")
 
 # CORS
 app.add_middleware(
@@ -65,7 +65,7 @@ async def startup_event():
 
 @app.get("/")
 def read_root():
-    return {"status": "online", "service": "Nagar Seva AI"}
+    return {"status": "online", "service": "Kavach AI"}
 
 @app.post("/analyze-image")
 async def analyze_image(
