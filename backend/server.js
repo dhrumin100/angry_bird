@@ -4,6 +4,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
 const startGhostFleet = require('./services/ghostFleet');
+const startKeepAlive = require('./services/keepAlive');
 
 dotenv.config();
 
@@ -45,6 +46,9 @@ const startServer = async () => {
         
         // Start the Ghost Fleet Simulation
         startGhostFleet();
+
+        // Start Keep-Alive self-ping (prevents Render free tier from sleeping)
+        startKeepAlive();
 
         app.listen(PORT, () => {
             console.log(`Server running on port ${PORT}`);
