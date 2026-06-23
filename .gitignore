@@ -32,5 +32,6 @@ datasets/
 dataset/
 *.jpg
 *.png
+!angry-bird/public/pwa-*.png
 *.txt
 runs/
