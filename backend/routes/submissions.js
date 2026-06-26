@@ -22,9 +22,11 @@ router.post('/', protect, async (req, res) => {
                 const base64Data = matches[2];
                 const buffer = Buffer.from(base64Data, 'base64');
                 const filename = `report-${Date.now()}-${Math.round(Math.random() * 1E9)}.${extension}`;
-                const uploadPath = path.join(__dirname, '../uploads', filename);
+                const uploadDir = path.join(__dirname, '../uploads');
+                const uploadPath = path.join(uploadDir, filename);
 
                 // Write file to disk
+                fs.mkdirSync(uploadDir, { recursive: true });
                 fs.writeFileSync(uploadPath, buffer);
                 
                 // Update image variable to be the URL path
