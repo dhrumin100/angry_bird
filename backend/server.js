@@ -6,7 +6,10 @@ const path = require('path');
 const startGhostFleet = require('./services/ghostFleet');
 const startKeepAlive = require('./services/keepAlive');
 
-dotenv.config();
+// Only load .env in development (when file exists)
+if (process.env.NODE_ENV !== 'production') {
+    dotenv.config();
+}
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -60,3 +63,4 @@ const startServer = async () => {
 };
 
 startServer();
+
