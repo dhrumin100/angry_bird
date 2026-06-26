@@ -11,6 +11,15 @@ if (process.env.NODE_ENV !== 'production') {
     dotenv.config();
 }
 
+const requiredEnv = ['MONGO_URI', 'JWT_SECRET'];
+const missingEnv = requiredEnv.filter((key) => !process.env[key]);
+
+if (missingEnv.length > 0) {
+    console.error(`Missing required environment variables: ${missingEnv.join(', ')}`);
+    console.error('Set these variables in Railway/Render before starting the backend service.');
+    process.exit(1);
+}
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 

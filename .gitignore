@@ -34,4 +34,5 @@ dataset/
 *.png
 !angry-bird/public/pwa-*.png
 *.txt
+!ai-backend/requirements.txt
 runs/
