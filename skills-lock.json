@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "loopy": {
+      "source": "Forward-Future/loopy",
+      "sourceType": "github",
+      "skillPath": "skills/loopy/SKILL.md",
+      "computedHash": "1a5cb4fa1ca6cebe9295517b71df01feff3bcfd0ab365b3703510a951242c67f"
+    }
+  }
+}
